@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GIGSREQD=100
+GIGSREQD=57
 
 gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
 msg() { echo $GIGSREQD GB NEEDED, $1 GB AVAILABLE: $2; }
@@ -13,7 +13,9 @@ else
   msg $initial CLEANING
   packages=(
     'docker-*'
-    'gcc-*'
+    'gcc-12'
+    'gcc-13'
+    'gcc-14'
     'gfortran-*'
     'google-*'
     'llvm-*'
