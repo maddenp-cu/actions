@@ -10,10 +10,10 @@ jobs:
         run: |
           set -x
           df -h .
-          sudo apt remove -y microsoft-edge-stable azure-cli google-cloud-cli google-chrome-stable firefox powershell snapd google-cloud-cli-anthoscli 'mysql-server-core-*' '*temurin*' '*jdk*'
+          sudo apt remove -y microsoft-edge-stable azure-cli google-cloud-cli google-chrome-stable firefox powershell snapd google-cloud-cli-anthoscli 'mysql-server-core-*' '*temurin*' '*jdk*' 'llvm-*' python3-botocore containerd.io 'docker-*' 'gcc-*' 
           sudo apt autoremove -y
           sudo apt clean -y
-          df -h .
           sudo apt update
           sudo apt install -y debian-goodies
+          df -h .
           dpigs -n 20 -H
