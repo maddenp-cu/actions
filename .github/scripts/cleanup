@@ -3,7 +3,7 @@
 GIGSREQD=56
 
 gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
-msg() { echo NEED $GIGSREQD GB AND $1 GB AVAILABLE: $s; }
+msg() { echo NEED $GIGSREQD GB AND $1 GB AVAILABLE: $2; }
 
 initial=$(gigsfree)
 
