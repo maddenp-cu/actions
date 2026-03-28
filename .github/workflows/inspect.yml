@@ -11,7 +11,7 @@ jobs:
           set -x
           # df -h .
           sudo apt update
-          sudo apt install -y dpigs
+          sudo apt install -y debian-goodies
           dpigs -n 100 -H
           # sudo apt autoremove -y
           # sudo apt clean -y
