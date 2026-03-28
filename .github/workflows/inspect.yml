@@ -10,5 +10,7 @@ jobs:
         run: |
           set -x
           df -h .
-          sudo apt-get clean -y
+          dpkg-query -W -f='${Installed-Size;10} ${Package}\n' | sort -nr | head -n20
+          sudo apt autoremove -y
+          sudo apt clean -y
           df -h .
