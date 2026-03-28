@@ -10,5 +10,9 @@ jobs:
         run: |
           set -x
           df -h
-          sudo mkdir /inspect
-          apt list --installed
+          pwd
+          df -h .
+          mkdir /work
+          cd /work
+          df -h .
+          apt-get clean -y
