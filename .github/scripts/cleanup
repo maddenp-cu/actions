@@ -13,9 +13,7 @@ else
   msg $initial CLEANING
   packages=(
     'docker-*'
-    'gcc-12'
-    'gcc-13'
-    'gcc-14'
+    'gcc-*'
     'gfortran-*'
     'google-*'
     'llvm-*'
