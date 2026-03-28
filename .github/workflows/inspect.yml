@@ -10,6 +10,7 @@ jobs:
         run: |
           set -x
           # df -h .
+          sudo apt update
           sudo apt install -y dpigs
           dpigs -n 100 -H
           # sudo apt autoremove -y
