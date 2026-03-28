@@ -11,6 +11,7 @@ if [[ $initial -ge $GIGSREQD ]]; then
   msg $initial OK
 else
   msg $initial CLEANING
+  (set -x && apt list --installed) # PM FIXME
   removable=(
     '*jdk*'
     'docker-*'
@@ -35,13 +36,14 @@ else
     powershell
     python3-botocore
     snapd
+    'llvm-*'
+    gradle
+    miniconda
+    
   )
-  (
-    set -x
-    sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
-    sudo apt autoremove -y
-    sudo apt clean -y
-  )
+  sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
+  sudo apt autoremove -y
+  sudo apt clean -y
   (
     set -x
     du -BM -s /usr/lib/* | sort -n
