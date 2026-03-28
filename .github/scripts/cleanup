@@ -11,7 +11,6 @@ if [[ $initial -ge $GIGSREQD ]]; then
   msg $initial OK
 else
   msg $initial CLEANING
-  (set -x && apt list --installed) # PM FIXME
   removable=(
     'docker-*'
     'gcc-12'
@@ -38,7 +37,7 @@ else
   sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
   sudo apt autoremove -y
   sudo apt clean -y
-  rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx}
+  sudo rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx}
   (
     set -x
     #du -BM -s /home/runner/* | sort -n
