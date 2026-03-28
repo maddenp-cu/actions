@@ -38,19 +38,19 @@ else
   )
   (
     set -x
-    sudo apt remove -y ${removable[@]} | grep -v "is not installed"
+    sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
     sudo apt autoremove -y
     sudo apt clean -y
   )
   (
     set -x
-    du -hs /usr/lib/*
-    du -hs /usr/share/*
-    du -hs usr/local/*
-    du -hs /home/runner/*
-    du -hs /usr/local/lib/*
-    du -hs /usr/local/share/*
-    du -hs /opt/*
+    du -BM -s /usr/lib/* | sort -n
+    du -BM -s /usr/share/* | sort -n
+    du -BM -s /usr/local/* | sort -n
+    du -BM -s /home/runner/* | sort -n
+    du -BM -s /usr/local/lib/* | sort -n
+    du -BM -s /usr/local/share/* | sort -n
+    du -BM -s /opt/* | sort -n
   ) || true
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
