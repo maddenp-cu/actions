@@ -2,47 +2,52 @@
 
 GIGSREQD=56
 
-gigsfree() {
-  df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'
-}
-
-removable=(
-  '*jdk*'
-  'docker-*'
-  'gcc-12'
-  'gcc-13'
-  'gfortran-*'
-  'llvm-*'
-  'mysql-client-*'
-  'mysql-server-core-*'
-  'postgresql-*'
-  'temurin-*'
-  azure-cli
-  containerd.io
-  firefox
-  gh
-  google-chrome-stable
-  google-cloud-cli
-  google-cloud-cli-anthoscli
-  kubectl
-  microsoft-edge-stable
-  podman
-  powershell
-  python3-botocore
-  snapd
-)
+gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
 
 initial=$(gigsfree)
-echo INITIAL FREE SPACE $initial GB
-(
-  set -x
-  sudo apt remove -y ${removable[@]}
-  sudo apt autoremove -y
-  sudo apt clean -y
-)
-final=$(gigsfree)
-echo FINAL FREE SPACE $final GB ($(( initial - final )) RECLAIMED)
-if [[ $final -lt $GIGSREQD ]]; then
-  echo NEED $GIGSREQD GB BUT $final AVAILABLE
-  exit 1
+
+# if [[ $initial -lt $GIGSREQD ]]; then
+if true; then
+
+  removable=(
+    '*jdk*'
+    'docker-*'
+    'gcc-12'
+    'gcc-13'
+    'gfortran-*'
+    'llvm-*'
+    'mysql-client-*'
+    'mysql-server-core-*'
+    'postgresql-*'
+    'temurin-*'
+    azure-cli
+    containerd.io
+    firefox
+    gh
+    google-chrome-stable
+    google-cloud-cli
+    google-cloud-cli-anthoscli
+    kubectl
+    microsoft-edge-stable
+    podman
+    powershell
+    python3-botocore
+    snapd
+  )
+
+  echo INITIAL FREE SPACE $initial GB
+  (
+    set -x
+    sudo apt remove -y ${removable[@]}
+    sudo apt autoremove -y
+    sudo apt clean -y
+  )
+  final=$(gigsfree)
+  reclaimed=$(( final - initial ))
+  echo FINAL FREE SPACE $final GB ($reclaimed) RECLAIMED)
+  if [[ $final -lt $GIGSREQD ]]; then
+    echo NEED $GIGSREQD GB BUT $final AVAILABLE, STOPPING
+    exit 1
+  fi
+
 fi
