@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-GIGSREQD=65
+GIGSREQD=56
 
 gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
+msg() { echo NEED $GIGSREQD GB AND $1 GB AVAILABLE: $s; }
 
 initial=$(gigsfree)
 
-# if [[ $initial -lt $GIGSREQD ]]; then
-if true; then
-
+if [[ $initial -ge $GIGSREQD ]]; then
+  msg $initial OK
+else
+  msg $initial CLEANING
   removable=(
     '*jdk*'
     'docker-*'
@@ -34,7 +36,6 @@ if true; then
     python3-botocore
     snapd
   )
-
   echo INITIAL FREE SPACE $initial GB
   (
     set -x
@@ -47,7 +48,7 @@ if true; then
   echo RECLAIMED $reclaimed GB
   echo FINAL FREE SPACE $final GB
   if [[ $final -lt $GIGSREQD ]]; then
-    echo NEED $GIGSREQD GB BUT $final GB AVAILABLE, STOPPING
+    msg $final STOPPING
     exit 1
   fi
 
