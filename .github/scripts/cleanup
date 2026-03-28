@@ -32,12 +32,16 @@ removable=(
   snapd
 )
 
-echo INITIAL FREE SPACE $(gigsfree) GB
-(set -x && sudo apt remove -y ${removable[@]})
-(set -x && sudo apt autoremove -y)
-(set -x && sudo apt clean -y)
+initial=$(gigsfree)
+echo INITIAL FREE SPACE $initial GB
+(
+  set -x
+  sudo apt remove -y ${removable[@]}
+  sudo apt autoremove -y
+  sudo apt clean -y
+)
 final=$(gigsfree)
-echo FINAL FREE SPACE $final GB
+echo FINAL FREE SPACE $final GB ($(( initial - final )) RECLAIMED)
 if [[ $final -lt $GIGSREQD ]]; then
   echo NEED $GIGSREQD GB BUT $final AVAILABLE
   exit 1
