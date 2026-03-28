@@ -13,48 +13,46 @@ else
   msg $initial CLEANING
   (set -x && apt list --installed) # PM FIXME
   removable=(
-    '*jdk*'
     'docker-*'
     'gcc-12'
     'gcc-13'
+    'gcc-14'
     'gfortran-*'
+    'google-*'
     'llvm-*'
-    'mysql-client-*'
-    'mysql-server-core-*'
+    'microsoft-*'
+    'mysql-*'
     'postgresql-*'
+    'python3-boto*'
     'temurin-*'
     azure-cli
     containerd.io
     firefox
+    gfortran
     gh
-    google-chrome-stable
-    google-cloud-cli
-    google-cloud-cli-anthoscli
     kubectl
-    microsoft-edge-stable
     podman
     powershell
-    python3-botocore
     snapd
-    'llvm-*'
-    gradle
-    miniconda
-    
   )
   sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
   sudo apt autoremove -y
   sudo apt clean -y
+  rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx}
   (
     set -x
-    du -BM -s /usr/lib/* | sort -n
-    du -BM -s /usr/share/* | sort -n
-    du -BM -s /usr/local/* | sort -n
-    du -BM -s /home/runner/* | sort -n
+    #du -BM -s /home/runner/* | sort -n
+    du -BM -s /home/runner/.* | sort -n
+    #du -BM -s /opt/* | sort -n
+    du -BM -s /opt/hostedtoolcache/* | sort -n
+    #du -BM -s /usr/lib/* | sort -n
+    #du -BM -s /usr/local/* | sort -n
     du -BM -s /usr/local/lib/* | sort -n
-    du -BM -s /usr/local/share/* | sort -n
-    du -BM -s /opt/* | sort -n
+    #du -BM -s /usr/local/share/* | sort -n
+    #du -BM -s /usr/share/* | sort -n
   ) || true
   final=$(gigsfree)
+  echo initial $initial final $final # PM FIXME
   reclaimed=$(( final - initial ))
   echo RECLAIMED $reclaimed GB
   if [[ $final -lt $GIGSREQD ]]; then
@@ -62,5 +60,4 @@ else
     exit 1
   fi
   msg $final OK
-
 fi
