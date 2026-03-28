@@ -35,23 +35,15 @@ else
     powershell
     snapd
   )
-  sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
-  sudo apt autoremove -y
-  sudo apt clean -y
-  sudo rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx} /home/runner/{.cargo,.dotnet,.rustup} /usr/local/lib/android
-  sudo rm -rf /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL}
-  (
+  sudo (
     set -x
-    #du -BM -s /home/runner/* | sort -n
-    #du -BM -s /home/runner/.* | sort -n
-    #du -BM -s /opt/* | sort -n
-    #du -BM -s /opt/hostedtoolcache/* | sort -n
-    #du -BM -s /usr/lib/* | sort -n
-    #du -BM -s /usr/local/* | sort -n
-    #du -BM -s /usr/local/lib/* | sort -n
-    #du -BM -s /usr/local/share/* | sort -n
-    #du -BM -s /usr/share/* | sort -n
-  ) || true
+    systemctl stop snapd
+    apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
+    apt autoremove -y
+    apt clean -y
+    rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx} /home/runner/{.cargo,.dotnet,.rustup} /usr/local/lib/android
+    rm -rf /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL}
+  )
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
   echo RECLAIMED $reclaimed GB
