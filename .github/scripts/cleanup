@@ -3,7 +3,7 @@
 GIGSREQD=100 # 56
 
 gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
-msg() { echo NEED $GIGSREQD GB AND $1 GB AVAILABLE: $2; }
+msg() { echo $GIGSREQD GB NEEDED, $1 GB AVAILABLE: $2; }
 
 initial=$(gigsfree)
 
@@ -36,7 +36,6 @@ else
     python3-botocore
     snapd
   )
-  echo INITIAL FREE SPACE $initial GB
   (
     set -x
     sudo apt remove -y ${removable[@]}
@@ -46,10 +45,10 @@ else
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
   echo RECLAIMED $reclaimed GB
-  echo FINAL FREE SPACE $final GB
   if [[ $final -lt $GIGSREQD ]]; then
     msg $final STOPPING
     exit 1
   fi
+  msg $final OK
 
 fi
