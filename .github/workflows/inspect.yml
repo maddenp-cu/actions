@@ -9,10 +9,11 @@ jobs:
       - name: inspect
         run: |
           set -x
-          # df -h .
-          sudo apt update
-          sudo apt install -y debian-goodies
-          dpigs -n 100 -H
-          # sudo apt autoremove -y
-          # sudo apt clean -y
-          # df -h .
+          df -h .
+          #sudo apt update
+          #sudo apt install -y debian-goodies
+          #dpigs -n 100 -H
+          sudo apt remove -y microsoft-edge-stable azure-cli google-cloud-cli google-chrome-stable firefox powershell snapd google-cloud-cli-anthoscli 'mysql-server-core-*' '*temurin*' '*jdk*'
+          sudo apt autoremove -y
+          sudo apt clean -y
+          df -h .
