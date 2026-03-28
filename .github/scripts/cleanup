@@ -35,14 +35,13 @@ else
     powershell
     snapd
   )
-  sudo (
+  (
     set -x
-    systemctl stop snapd
-    apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
-    apt autoremove -y
-    apt clean -y
-    rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx} /home/runner/{.cargo,.dotnet,.rustup} /usr/local/lib/android
-    rm -rf /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL}
+    sudo systemctl stop snapd
+    sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
+    sudo apt autoremove -y
+    sudo apt clean -y
+    sudo rm -rf /home/runner/{.cargo,.dotnet,.rustup} /opt/{az,google,microsoft,pipx} /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL} /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/local/{aws-*,julia*} /usr/local/lib/android /usr/local/share/{chromium,powershell} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift}
   )
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
