@@ -1,0 +1,14 @@
+name: inspect
+on:
+  workflow_dispatch:
+jobs:
+  inspect:
+    name: inspect
+    runs-on: ubuntu-latest
+    steps:
+      - name: inspect
+        run: |
+          set -x
+          df -h
+          sudo mkdir /inspect
+          apt list --installed
