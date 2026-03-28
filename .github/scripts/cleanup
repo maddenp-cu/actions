@@ -44,9 +44,10 @@ if true; then
   )
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
-  echo FINAL FREE SPACE $final GB ($reclaimed) RECLAIMED)
+  echo RECLAIMED $reclaimed GB
+  echo FINAL FREE SPACE $final GB
   if [[ $final -lt $GIGSREQD ]]; then
-    echo NEED $GIGSREQD GB BUT $final AVAILABLE, STOPPING
+    echo NEED $GIGSREQD GB BUT $final GB AVAILABLE, STOPPING
     exit 1
   fi
 
