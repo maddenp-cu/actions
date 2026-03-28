@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GIGSREQD=56
+GIGSREQD=65
 
 gigsfree() { df . -BG --output=avail | tail -n1 | sed 's/[^0-9]//g'; }
 
