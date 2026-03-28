@@ -9,10 +9,6 @@ jobs:
       - name: inspect
         run: |
           set -x
-          df -h
-          pwd
           df -h .
-          mkdir /work
-          cd /work
+          sudo apt-get clean -y
           df -h .
-          apt-get clean -y
