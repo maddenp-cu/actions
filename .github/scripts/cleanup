@@ -38,7 +38,7 @@ else
   )
   (
     set -x
-    sudo apt remove -y ${removable[@]}
+    sudo apt remove -y ${removable[@]} | grep -v "is not installed"
     sudo apt autoremove -y
     sudo apt clean -y
   )
