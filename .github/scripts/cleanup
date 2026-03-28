@@ -11,14 +11,7 @@ if [[ $initial -ge $GIGSREQD ]]; then
   msg $initial OK
 else
   msg $initial CLEANING
-  (
-    set -x
-    df -h .
-    sudo docker system prune -af || true
-    sudo docker builder prune -af || true
-    df -h .
-  )
-  removable=(
+  packages=(
     'docker-*'
     'gcc-12'
     'gcc-13'
@@ -42,12 +35,24 @@ else
     powershell
     snapd
   )
+  dirs=(
+    /home/runner/{.cargo,.dotnet,.rustup}
+    /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL}
+    /opt/{az,google,microsoft,pipx}
+    /usr/lib/{firefox,google-cloud-sdk,jvm,snapd}
+    /usr/local/lib/android
+    /usr/local/share/{chromium,powershell}
+    /usr/local/{aws-*,julia*}
+    /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift}
+  )
   (
     set -x
-    sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
+    sudo docker system prune -af || true
+    sudo docker builder prune -af || true
+    sudo apt remove -y ${packages[@]} | grep --line-buffered -v "is not installed"
     sudo apt autoremove -y
     sudo apt clean -y
-    sudo rm -rf /home/runner/{.cargo,.dotnet,.rustup} /opt/{az,google,microsoft,pipx} /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL} /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/local/{aws-*,julia*} /usr/local/lib/android /usr/local/share/{chromium,powershell} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift}
+    sudo rm -rf ${dirs[@]}
   )
   final=$(gigsfree)
   reclaimed=$(( final - initial ))
