@@ -11,6 +11,13 @@ if [[ $initial -ge $GIGSREQD ]]; then
   msg $initial OK
 else
   msg $initial CLEANING
+  (
+    set -x
+    df -h .
+    sudo docker system prune -af || true
+    sudo docker builder prune -af || true
+    df -h .
+  )
   removable=(
     'docker-*'
     'gcc-12'
@@ -37,7 +44,6 @@ else
   )
   (
     set -x
-    sudo systemctl stop snapd
     sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
     sudo apt autoremove -y
     sudo apt clean -y
