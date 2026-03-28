@@ -24,6 +24,7 @@ else
     'postgresql-*'
     'python3-boto*'
     'temurin-*'
+    ant
     azure-cli
     containerd.io
     firefox
@@ -37,21 +38,21 @@ else
   sudo apt remove -y ${removable[@]} | grep --line-buffered -v "is not installed"
   sudo apt autoremove -y
   sudo apt clean -y
-  sudo rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx}
+  sudo rm -rf /usr/lib/{firefox,google-cloud-sdk,jvm,snapd} /usr/share/{az_*,dotnet,gradle-*,kotlinc,miniconda,swift} /usr/local/{aws-*,julia*} /usr/local/share/{chromium,powershell} /opt/{az,google,microsoft,pipx} /home/runner/{.cargo,.dotnet,.rustup} /usr/local/lib/android
+  sudo rm -rf /opt/hostedtoolcache/{Ruby,PyPy,node,go,CodeQL}
   (
     set -x
     #du -BM -s /home/runner/* | sort -n
-    du -BM -s /home/runner/.* | sort -n
+    #du -BM -s /home/runner/.* | sort -n
     #du -BM -s /opt/* | sort -n
-    du -BM -s /opt/hostedtoolcache/* | sort -n
+    #du -BM -s /opt/hostedtoolcache/* | sort -n
     #du -BM -s /usr/lib/* | sort -n
     #du -BM -s /usr/local/* | sort -n
-    du -BM -s /usr/local/lib/* | sort -n
+    #du -BM -s /usr/local/lib/* | sort -n
     #du -BM -s /usr/local/share/* | sort -n
     #du -BM -s /usr/share/* | sort -n
   ) || true
   final=$(gigsfree)
-  echo initial $initial final $final # PM FIXME
   reclaimed=$(( final - initial ))
   echo RECLAIMED $reclaimed GB
   if [[ $final -lt $GIGSREQD ]]; then
