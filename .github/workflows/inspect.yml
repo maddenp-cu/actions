@@ -3,9 +3,7 @@ on:
   push:
 jobs:
   inspect:
-    name: inspect
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: inspect
-        run: .github/scripts/cleanup
+      - run: .github/scripts/cleanup
